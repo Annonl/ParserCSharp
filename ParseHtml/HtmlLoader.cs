@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace ParseHtml
 {
-    class HtmlLoader
+    internal class HtmlLoader
     {
+        public HtmlLoader(IParserSettings value)
+        {
+
+        }
+
+        public string GetSource(int count)
+        {
+            return 
+        }
     }
 }

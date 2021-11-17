@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace ParseHtml.Book
 {
-    class ReviewBook
+    public class ReviewBook
     {
+        public string NameBook { get; set; }
+        public string BookAuthor { get; set; }
+        public string Review { get; set; }
+        public string ReviewerName { get; set; }
     }
 }

@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
+using AngleSharp.Html.Parser;
 
 namespace ParseHtml.Book
 {
-    public class BookParser :IParser<List<ReviewBook>>
+    public class BookParser : IParser<List<ReviewBook>>
     {
         public List<ReviewBook> Parse(IHtmlDocument document)
         {
@@ -28,7 +30,10 @@ namespace ParseHtml.Book
                     string authorReview = GetAuthorReview(review);
                     result.Add(new ReviewBook()
                     {
-                        BookAuthor = author, Grade = grade, NameBook = nameBook, Review = rev,
+                        BookAuthor = author,
+                        Grade = grade,
+                        NameBook = nameBook,
+                        Review = rev,
                         ReviewerName = authorReview
                     });
                 }
@@ -39,14 +44,23 @@ namespace ParseHtml.Book
         private string GetAuthorReview(IElement review)
         {
             var nameAuthorReviewElement = review.QuerySelectorAll("div")
-                .First(item => item.ClassName != null && item.ClassName.Contains("universal-blocks-user row"))
+                .First(item => item.ClassName != null && item.ClassName.Contains("col"))
                 .QuerySelectorAll("a").Last();
             return nameAuthorReviewElement.TextContent;
         }
 
         private string GetReviewText(IElement review)
         {
-            return null;
+            var reviewLink = review.QuerySelectorAll("div")
+                .First(item => item.ClassName != null && item.ClassName.Contains("universal-blocks-content"))
+                .QuerySelectorAll("a").Last(item => item.ClassName == null);
+            var link = reviewLink.GetAttribute("href");
+            HtmlLoader loader = new HtmlLoader(new BookSettings() { Prefix = link });
+            var source = loader.GetSource(0);
+            var parserDocument = new HtmlParser();
+            var document = parserDocument.ParseDocument(source.Result);
+            ReviewParser parser = new ReviewParser(link.Split('#').Last());
+            return parser.Parse(document);
         }
 
         private string GetNameAuthor(IElement review)

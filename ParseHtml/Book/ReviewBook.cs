@@ -10,6 +10,7 @@ namespace ParseHtml.Book
     {
         public string NameBook { get; set; }
         public string BookAuthor { get; set; }
+        public int Grade { get; set; }
         public string Review { get; set; }
         public string ReviewerName { get; set; }
     }

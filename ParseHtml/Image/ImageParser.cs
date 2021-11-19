@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using AngleSharp.Html.Dom;
@@ -13,32 +14,28 @@ namespace ParseHtml.Image
 {
     public class ParserImage
     {
-        public List<string> Parse(string searchQuery)
+        private ImageSettings settings = new ImageSettings();
+        private readonly Regex rg = new Regex(@"""url"":""[\w:\/.-]*""");
+        public List<string> Parse(string searchQuery, int count)
         {
             IWebDriver driver = new ChromeDriver();
-            driver.Navigate().GoToUrl("https://www.google.ru/imghp?hl=ru&ogbl");
+            driver.Navigate().GoToUrl(settings.BaseUrl);
 
-            IWebElement element = driver.FindElement(By.ClassName("gLFyf"));
+            IWebElement element = driver.FindElement(By.ClassName("input__control"));
             element.SendKeys(searchQuery);
 
             // Get the search results panel that contains the link for each result.
-            IWebElement resultsPanel = driver.FindElement(By.ClassName("Tg7LZd"));
+            IWebElement resultsPanel = driver.FindElement(By.ClassName("websearch-button"));
             resultsPanel.Click();
-            IList<IWebElement> Imghref = resultsPanel.FindElements(By.ClassName("rg_i"));
-            List<IWebElement> searchResults;
+            //IList<IWebElement> Imghref = resultsPanel.FindElements(By.ClassName("serp-item__link"));
             Thread.Sleep(10000);
-            try
-            {
-                searchResults = resultsPanel.FindElements(By.ClassName("wXeWr")).Take(20).ToList();
-            }
-            catch (Exception e)
-            {
-                searchResults = resultsPanel.FindElements(By.ClassName("wXeWr")).Take(20).ToList();
-            }
             var result = new List<string>();
-            foreach (IWebElement searchResult in Imghref)
+            for (int i = 0; i < count; i++)
             {
-                result.Add(searchResult.GetAttribute("href"));
+                var searchResult = resultsPanel.FindElement(By.XPath("//*[contains(@class,'serp-item_pos_" + i + "')]"));
+                var str = searchResult.GetAttribute("data-bem");
+                var res = rg.Match(str);
+                result.Add(res.Value.Substring(7, res.Value.Length - 8));
             }
             return result;
         }

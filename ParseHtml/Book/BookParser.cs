@@ -8,7 +8,7 @@ using AngleSharp.Html.Dom;
 
 namespace ParseHtml.Book
 {
-    class BookParser :IParser<List<ReviewBook>>
+    public class BookParser :IParser<List<ReviewBook>>
     {
         public List<ReviewBook> Parse(IHtmlDocument document)
         {
@@ -17,15 +17,21 @@ namespace ParseHtml.Book
             var result = new List<ReviewBook>();
             foreach (var review in reviews)
             {
-                int grade = GetGrade(review);
-                string nameBook = GetNameBook(review);
-                string author = GetNameAuthor(review);
-                string rev = GetReviewText(review);
-                string authorReview = GetAuthorReview(review);
-                result.Add(new ReviewBook()
+                if (!review
+                    .QuerySelectorAll("div").HasClass("box-bd notice") && !review
+                    .QuerySelectorAll("div").HasClass("box-page-pagination"))
                 {
-                    BookAuthor = author, Grade = grade, NameBook = nameBook, Review = rev, ReviewerName = authorReview
-                });
+                    int grade = GetGrade(review);
+                    string nameBook = GetNameBook(review);
+                    string author = GetNameAuthor(review);
+                    string rev = GetReviewText(review);
+                    string authorReview = GetAuthorReview(review);
+                    result.Add(new ReviewBook()
+                    {
+                        BookAuthor = author, Grade = grade, NameBook = nameBook, Review = rev,
+                        ReviewerName = authorReview
+                    });
+                }
             }
             return result;
         }
@@ -40,12 +46,12 @@ namespace ParseHtml.Book
 
         private string GetReviewText(IElement review)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         private string GetNameAuthor(IElement review)
         {
-            var nameAuthorElement = review.QuerySelectorAll("div")
+            var nameAuthorElement = review.QuerySelectorAll("p")
                 .First(item => item.ClassName != null && item.ClassName.Contains("universal-blocks-description"))
                 .QuerySelectorAll("a").Last();
             return nameAuthorElement.TextContent;
@@ -53,7 +59,7 @@ namespace ParseHtml.Book
 
         private string GetNameBook(IElement review)
         {
-            var nameBookElement = review.QuerySelectorAll("div")
+            var nameBookElement = review.QuerySelectorAll("p")
                 .First(item => item.ClassName != null && item.ClassName.Contains("universal-blocks-description"))
                 .QuerySelectorAll("a").First();
             return nameBookElement.TextContent;

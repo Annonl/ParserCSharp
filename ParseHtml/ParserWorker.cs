@@ -8,7 +8,7 @@ using AngleSharp.Html.Parser;
 
 namespace ParseHtml
 {
-    class ParserWorker<T> where T : class
+    public class ParserWorker<T> where T : class
     {
         private IParserSettings parserSettings;
         private HtmlLoader loader;

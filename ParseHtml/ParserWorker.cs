@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using AngleSharp.Html.Parser;
 
@@ -14,6 +15,9 @@ namespace ParseHtml
 
         public bool IsActive { get; private set; }
         public IParser<T> Parser { get; private set; }
+        public event Action<object, T> OnNewData;
+
+        public event Action<object> OnCompleted;
         public IParserSettings ParserSettings
         {
             get => parserSettings;
@@ -36,11 +40,13 @@ namespace ParseHtml
 
         private async void Work(int count)
         {
-            string url = loader.GetSource(count);
+            var source = loader.GetSource(count);
             var parserDocument = new HtmlParser();
-            var document = await parserDocument.ParseDocumentAsync(url);
+            var document = await parserDocument.ParseDocumentAsync(source.Result, new CancellationToken(false));
             var result = Parser.Parse(document);
-
+            OnNewData?.Invoke(this,result);
+            OnCompleted?.Invoke(this);
+            IsActive = false;
         }
     }
 }

@@ -24,10 +24,9 @@ namespace ParseHtml.Image
             IWebElement element = driver.FindElement(By.ClassName("input__control"));
             element.SendKeys(searchQuery);
 
-            // Get the search results panel that contains the link for each result.
             IWebElement resultsPanel = driver.FindElement(By.ClassName("websearch-button"));
             resultsPanel.Click();
-            //IList<IWebElement> Imghref = resultsPanel.FindElements(By.ClassName("serp-item__link"));
+
             Thread.Sleep(10000);
             var result = new List<string>();
             for (int i = 0; i < count; i++)

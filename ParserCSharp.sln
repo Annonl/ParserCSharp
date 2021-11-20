@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParseHtml", "ParseHtml\ParseHtml.csproj", "{7364377A-295A-4E01-87B3-11B0EDAA591F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParseHtml", "ParseHtml\ParseHtml.csproj", "{7364377A-295A-4E01-87B3-11B0EDAA591F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainAppParse", "MainAppParse\MainAppParse.csproj", "{ADF15748-4895-43F8-9B3E-812962B24B29}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{7364377A-295A-4E01-87B3-11B0EDAA591F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7364377A-295A-4E01-87B3-11B0EDAA591F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7364377A-295A-4E01-87B3-11B0EDAA591F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADF15748-4895-43F8-9B3E-812962B24B29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADF15748-4895-43F8-9B3E-812962B24B29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADF15748-4895-43F8-9B3E-812962B24B29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADF15748-4895-43F8-9B3E-812962B24B29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

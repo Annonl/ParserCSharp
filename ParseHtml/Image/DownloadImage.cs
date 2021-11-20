@@ -26,7 +26,14 @@ namespace ParseHtml.Image
             foreach (var res in resultList)
             {
                 Uri uri = new Uri(res);
-                client.DownloadFile(uri, FilePath + res.Split('/').Last());
+                try
+                {
+                    client.DownloadFile(uri, FilePath + res.Split('/').Last());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
 
         }

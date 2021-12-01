@@ -55,7 +55,7 @@ namespace ParseHtml.Book
                 .First(item => item.ClassName != null && item.ClassName.Contains("universal-blocks-content"))
                 .QuerySelectorAll("a").Last(item => item.ClassName == null);
             var link = reviewLink.GetAttribute("href");
-            HtmlLoader loader = new HtmlLoader(new BookSettings() { Prefix = link });
+            HtmlLoader loader = new HtmlLoader(new BookSettings(1) { Prefix = link });
             var source = loader.GetSource(0);
             var parserDocument = new HtmlParser();
             var document = parserDocument.ParseDocument(source.Result);

@@ -9,9 +9,4 @@
     <PackageReference Include="Selenium.WebDriver" Version="4.0.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="News\" />
-    <Folder Include="ArticleYandex\" />
-  </ItemGroup>
-
 </Project>

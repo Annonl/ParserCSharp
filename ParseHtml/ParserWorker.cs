@@ -12,12 +12,11 @@ namespace ParseHtml
     {
         private IParserSettings parserSettings;
         private HtmlLoader loader;
-
-        public bool IsActive { get; private set; }
         public IParser<T> Parser { get; private set; }
-        public event Action<object, T> OnNewData;
 
+        public event Action<object, T> OnNewData;
         public event Action<object> OnCompleted;
+
         public IParserSettings ParserSettings
         {
             get => parserSettings;
@@ -32,21 +31,21 @@ namespace ParseHtml
             Parser = parser;
         }
 
-        public void Start(int count)
+        public void Start()
         {
-            IsActive = true;
-            Work(count);
+            Work();
         }
 
-        private async void Work(int count)
+        private void Work()
         {
-            var source = loader.GetSource(count);
-            var parserDocument = new HtmlParser();
-            var document = await parserDocument.ParseDocumentAsync(source.Result, new CancellationToken(false));
-            var result = Parser.Parse(document);
-            OnNewData?.Invoke(this,result);
-            OnCompleted?.Invoke(this);
-            IsActive = false;
+            for (int i = parserSettings.StartPoint; i <= parserSettings.EndPoint; i++)
+            {
+                var source = loader.GetSource(i);
+                var parserDocument = new HtmlParser();
+                var document = parserDocument.ParseDocument(source.Result);
+                var result = Parser.Parse(document);
+                OnNewData?.Invoke(this, result);
+            }
         }
     }
 }
